@@ -1,7 +1,8 @@
-//pt.h
-// created by: Kurt L. Manion
-// on: Sun., 27 May 2018
-//
+/*-
+ *pt.h
+ * created by: Kurt L. Manion
+ * on: Sun., 27 May 2018
+ */
 
 #ifndef _PT_H_
 #define _PT_H_
@@ -31,4 +32,4 @@ __END_DECLS
 
 #endif /* !_PT_H_ */
 
-/* vim: set ts=4 sw=4 noexpandtab tw=79: */
+/* vim: set ts=8 sw=8 noexpandtab tw=79: */

@@ -1,8 +1,9 @@
-//main.c
-// created by: Kurt L. Manion
-// on: Sat., 19 May 2018
-// challenge from: Berkeley Fall 2001 #4, 2D-Nims
-//
+/*-
+ *main.c
+ * created by: Kurt L. Manion
+ * on: Sat., 19 May 2018
+ * challenge from: Berkeley Fall 2001 #4, 2D-Nims
+ */
 
 /*-
  * DESCRIPTION
@@ -48,8 +49,8 @@
 
 int
 main(
-	int argc,
-	char *const argv[])
+  int argc,
+  char *const argv[])
 {
 	int X,Y,xi,yi;
 	cluster_head_t cla[2];
@@ -58,65 +59,72 @@ main(
 	cluster_t *cluster,*saved;
 
 	for (unsigned set=1; !feof(stdin); ++set)
-	{
+	  {
 		scanf("%d %d ",&X, &Y);
 
 		for (size_t i=0; i<2; ++i)
-		{
+		  {
 			cluster_head_t *cl;
 			cl = &cla[i];
 			STAILQ_INIT(cl);
 			STAILQ_INIT(&ptl);
 			while (scanf("%d %d ", &xi, &yi),xi != -1)
-			{
+			  {
 				pt = pt_make(xi, yi);
 
 				saved = NULL;
-				if (!STAILQ_EMPTY(cl)) {
+				if (!STAILQ_EMPTY(cl))
+				  {
 					STAILQ_FOREACH(cluster, cl, cdr)
-					{
-						if (cluster_pt_adj(cluster, pt)) {
+					  {
+						if (cluster_pt_adj(cluster, pt))
+						  {
 							if (!saved) {
 								STAILQ_INSERT_HEAD(cluster->pt_lst, pt, cdr);
 								saved = cluster;
 							} else {
-								// pt has matched with two or more clusters,
-								// thus thoes clusters must be annexed
+								/* pt has matched with two or more clusters,
+								 * thus thoes clusters must be annexed */
 								STAILQ_REMOVE(cl, cluster, _cluster, cdr);
 								saved = cluster_annex(saved, cluster);
 							}
-						}
-					}
-				}
+						  }
+					  }
+				  }
 
-				if (!saved) {
+				if (!saved)
+				  {
 					cluster = NULL;
-					if (!STAILQ_EMPTY(&ptl)) {
+					if (!STAILQ_EMPTY(&ptl))
+					  {
 						STAILQ_FOREACH(e, &ptl, cdr)
-						{
-							if (pt_pt_adj(pt, e)) {
+						  {
+							if (pt_pt_adj(pt, e))
+							  {
 								STAILQ_REMOVE(&ptl, e, _pt, cdr);
 								if (!cluster)
-									cluster = cluster_make(pt, e, NULL);
+								  cluster = cluster_make(pt, e, NULL);
 								else
-									STAILQ_INSERT_HEAD(cluster->pt_lst, e, cdr);
-							}
-						}
-					}
+								  STAILQ_INSERT_HEAD(cluster->pt_lst, e, cdr);
+							  }
+						  }
+					  }
 					if (cluster)
-						STAILQ_INSERT_HEAD(cl, cluster, cdr);
+					  STAILQ_INSERT_HEAD(cl, cluster, cdr);
 					else
-						STAILQ_INSERT_HEAD(&ptl, pt, cdr);
-				}
-			}
+					  STAILQ_INSERT_HEAD(&ptl, pt, cdr);
+				  }
+			  }
 
-			if (!STAILQ_EMPTY(&ptl)) {
-				STAILQ_FOREACH(pt, &ptl, cdr) {
+			if (!STAILQ_EMPTY(&ptl))
+			  {
+				STAILQ_FOREACH(pt, &ptl, cdr)
+				  {
 					STAILQ_REMOVE(&ptl, pt, _pt, cdr);
 					pt_free(pt);
-				}
-			}
-		}
+				  }
+			  }
+		  }
 
 		printf("Set %u:\n", set);
 
@@ -126,14 +134,14 @@ main(
 		putchar('\n');
 
 		for (size_t i=0; i<2; ++i)
-		{
+		  {
 			STAILQ_FOREACH(cluster, &cla[i], cdr)
-			{
+			  {
 				STAILQ_REMOVE(&cla[i], cluster, _cluster, cdr);
 				cluster_free(cluster);
-			}
-		}
-	}
+			  }
+		  }
+	  }
 
 	return EXIT_SUCCESS;
 }
